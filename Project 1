@@ -1,0 +1,56 @@
+
+
+# Week-1-Assignment
+
+1.Load Dataset & Summarize Stats
+
+import pandas as pd
+
+# Load dataset
+df = pd.read_csv("Titanic-Dataset-selected-columns.csv")
+
+# Basic info
+print(df.info())
+
+# Statistical summary
+print(df.describe(include="all"))
+
+2.Handle Missing Data
+
+# Fill missing Age with median
+df['Age'].fillna(df['Age'].median(), inplace=True)
+
+# Fill missing Fare with mean
+df['Fare'].fillna(df['Fare'].mean(), inplace=True)
+
+# Example: Fill missing Embarked with mode (most frequent value)
+df['Embarked'].fillna(df['Embarked'].mode()[0], inplace=True)
+
+
+3.Encode Categorical Variables
+
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+
+# Label Encoding for Sex (male=0, female=1)
+le = LabelEncoder()
+df['Sex'] = le.fit_transform(df['Sex'])
+
+# One-Hot Encoding for Embarked
+df = pd.get_dummies(df, columns=['Embarked'], drop_first=True)
+
+
+4.Visualize Age Distribution
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.histplot(df['Age'], bins=30, kde=True)
+plt.title("Age Distribution of Titanic Passengers")
+plt.xlabel("Age")
+plt.ylabel("Count")
+plt.show()
+
+
+5.Save Cleaned Dataset
+
+df.to_csv("Titanic_cleaned.csv", index=False)
